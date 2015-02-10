@@ -1,0 +1,13 @@
+{
+  "name": "goggles",
+  "version": "0.1.0",
+  "description": "A bootstrap and react based frontend for waapow.com",
+  "author": "Ben Ridge <ben@wanderaround.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benridge/goggles"
+  },
+  "dependencies": {
+    "bootstrap": "3.3.2"
+  }
+}
