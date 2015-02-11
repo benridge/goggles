@@ -14,7 +14,7 @@
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-xs-6"><h4>Location</h4></div>
           <div class="col-xs-3"><h4>Amount</h4></div>
@@ -22,66 +22,123 @@
         </div>
       </div>
     </nav>
-
-    <div class="report-table">
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="abasinHeading">
-            <h4 class="panel-title">
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#abasin" aria-expanded="false" aria-controls="abasin">
-                <div class="row">
-                  <div class="col-xs-6">Arapahoe Basin</div>
-                  <div class="col-xs-3">5.0</div>
-                  <div class="col-xs-3">2/9/15 6:30am</div>
-                </div>
-              </a>
-            </h4>
-          </div>
-          <div id="abasin" class="panel-collapse collapse" role="tabpanel" aria-labelledby="abasinHeading">
-            <div class="panel-body">
+    <div class="report-container">
+      <div class="panel panel-default">
+        <a class="collapsed" data-toggle="collapse" href="#abasinCollapse" aria-expanded="false" aria-controls="abasinCollapse">
+          <div class="panel-heading">
+            <h3 class="panel-title">
               <div class="row">
-                <div class="col-xs-6">coloradoski.com</div>
+                <div class="col-xs-6">Arapahoe Basin</div>
                 <div class="col-xs-3">5.0</div>
                 <div class="col-xs-3">2/9/15 6:30am</div>
               </div>
-              <div class="row">
-                <div class="col-xs-6">arapahoebasin.com</div>
-                <div class="col-xs-3">4.0</div>
-                <div class="col-xs-3">2/9/15 5:30am</div>
-              </div>
+            </h3>
+          </div>
+        </a>
+        <div class="collapse" id="abasinCollapse">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-6">coloradoski.com</div>
+              <div class="col-xs-3">5.0</div>
+              <div class="col-xs-3">2/9/15 6:30am</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">arapahoebasin.com</div>
+              <div class="col-xs-3">4.0</div>
+              <div class="col-xs-3">2/9/15 5:30am</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="heading-beavercreek">
-            <h4 class="panel-title">
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#beavercreek" aria-expanded="false" aria-controls="beavercreek">
+
+      <div class="panel panel-default">
+        <a class="collapsed" data-toggle="collapse" href="#bcCollapse" aria-expanded="false" aria-controls="bcCollapse">
+          <div class="panel-heading">
+            <h3 class="panel-title">
                 <div class="row">
                   <div class="col-xs-6">Beaver Creek</div>
-                  <div class="col-xs-3">2.0</div>
-                  <div class="col-xs-3">2/9/15 6:30am</div>
+                  <div class="col-xs-3">4.0</div>
+                  <div class="col-xs-3">2/9/15 6:40am</div>
                 </div>
-              </a>
-            </h4>
+            </h3>
           </div>
-          <div id="beavercreek" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-beavercreek">
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-xs-6">coloradoski.com</div>
-                <div class="col-xs-3">2.0</div>
-                <div class="col-xs-3">2/9/15 6:30am</div>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">snow.com</div>
-                <div class="col-xs-3">1.0</div>
-                <div class="col-xs-3">2/9/15 5:30am</div>
-              </div>
+        </a>
+        <div class="collapse" id="bcCollapse">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-6">coloradoski.com</div>
+              <div class="col-xs-3">4.0</div>
+              <div class="col-xs-3">2/9/15 6:40am</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">snow.com</div>
+              <div class="col-xs-3">4.0</div>
+              <div class="col-xs-3">2/9/15 5:30am</div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!--<div class="report-table">-->
+      <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading" role="tab" id="abasinHeading">-->
+            <!--<h4 class="panel-title">-->
+              <!--<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#abasin" aria-expanded="false" aria-controls="abasin">-->
+                <!--<div class="row">-->
+                  <!--<div class="col-xs-6">Arapahoe Basin</div>-->
+                  <!--<div class="col-xs-3">5.0</div>-->
+                  <!--<div class="col-xs-3">2/9/15 6:30am</div>-->
+                <!--</div>-->
+              <!--</a>-->
+            <!--</h4>-->
+          <!--</div>-->
+          <!--<div id="abasin" class="panel-collapse collapse" role="tabpanel" aria-labelledby="abasinHeading">-->
+            <!--<div class="panel-body">-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">coloradoski.com</div>-->
+                <!--<div class="col-xs-3">5.0</div>-->
+                <!--<div class="col-xs-3">2/9/15 6:30am</div>-->
+              <!--</div>-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">arapahoebasin.com</div>-->
+                <!--<div class="col-xs-3">4.0</div>-->
+                <!--<div class="col-xs-3">2/9/15 5:30am</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading" role="tab" id="heading-beavercreek">-->
+            <!--<h4 class="panel-title">-->
+              <!--<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#beavercreek" aria-expanded="false" aria-controls="beavercreek">-->
+                <!--<div class="row">-->
+                  <!--<div class="col-xs-6">Beaver Creek</div>-->
+                  <!--<div class="col-xs-3">2.0</div>-->
+                  <!--<div class="col-xs-3">2/9/15 6:30am</div>-->
+                <!--</div>-->
+              <!--</a>-->
+            <!--</h4>-->
+          <!--</div>-->
+          <!--<div id="beavercreek" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-beavercreek">-->
+            <!--<div class="panel-body">-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">coloradoski.com</div>-->
+                <!--<div class="col-xs-3">2.0</div>-->
+                <!--<div class="col-xs-3">2/9/15 6:30am</div>-->
+              <!--</div>-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">snow.com</div>-->
+                <!--<div class="col-xs-3">1.0</div>-->
+                <!--<div class="col-xs-3">2/9/15 5:30am</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
   </body>
 </html>
