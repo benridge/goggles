@@ -1,6 +1,20 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    "6to5": {
+      options: {
+        sourceMap: 'inline'
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src',
+          src: ['**/*.js'],
+          dest: 'es6-compiled',
+          ext: '.js'
+        }]
+      }
+    },
     jshint: {
       files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
       options: {
@@ -12,6 +26,23 @@ module.exports = function(grunt) {
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint']
+    },
+    webpack: {
+      options: {
+        entry: "./es6-compiled/init.js",
+        output: {
+          path: './public/dist',
+          filename: "webpack_bundle.js"
+        },
+        module: {
+          loaders: [
+            {test: /\.css$/, loader: "style!css"}
+          ]
+        }
+      },
+      build: {
+
+      }
     },
     copy: {
       main: {
@@ -45,8 +76,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks("grunt-webpack");
+  grunt.loadNpmTasks("grunt-6to5");
 
-  grunt.registerTask('build', ['copy']);
+  grunt.registerTask('pack', ['webpack:build']);
+  grunt.registerTask('compile', ['6to5']);
+  grunt.registerTask('build', ['copy', 'compile', 'webpack:build']);
   grunt.registerTask('default', ['build']);
 
 };
