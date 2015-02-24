@@ -10,8 +10,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src',
           src: ['**/*.js'],
-          dest: 'es6-compiled',
-          ext: '.js'
+          dest: 'es6-compiled'
         }]
       }
     },
@@ -29,14 +28,36 @@ module.exports = function(grunt) {
     },
     webpack: {
       options: {
-        entry: "./es6-compiled/init.js",
+        entry: "./src/init.react.js",
         output: {
           path: './public/dist',
-          filename: "webpack_bundle.js"
+          filename: 'webpack_bundle.js'
         },
+        externals: {
+          jquery: true,
+          lodash: "_",
+          superagent: true,
+          react: "React"
+        },
+
+        debug: true,
+        devtool: "#inline-source-map",
         module: {
+          preLoaders: [
+            {
+              test: /\.js$/,
+              loader: "source-map-loader"
+            }
+          ],
           loaders: [
-            {test: /\.css$/, loader: "style!css"}
+            {
+              test: /\.css$/,
+              loader: "style!css"
+            },
+            {
+              test: /\.js$/,
+              loader: 'jsx-loader?harmony'
+            }
           ]
         }
       },
@@ -51,26 +72,54 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'node_modules/bootstrap/dist/',
             src: '**',
-            dest: 'lib/bootstrap/dist/'
+            dest: 'public/lib/bootstrap/dist/'
           },
           {
             expand: true,
             cwd: 'node_modules/bootstrap/js',
             src: '*.js',
-            dest: 'lib/bootstrap/dist/js/',
+            dest: 'public/lib/bootstrap/dist/js/',
             filter: 'isFile'
           },
           {
             expand: true,
             cwd: 'node_modules/jquery/dist',
             src: 'jquery*.js',
-            dest: 'lib/jquery/dist/',
+            dest: 'public/lib/jquery/dist/',
             filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: 'node_modules/superagent',
+            src: 'superagent.js',
+            dest: 'public/lib/superagent/dist/',
+            filter: 'isFile'
+          }
+        ]
+      },
+      'local-dist': {
+        files: [
+          {
+            expand: true,
+            cwd: 'public/',
+            src: '**',
+            dest: '../webdev/docroot/public/'
+          }
+        ]
+      }
+    },
+    react: {
+      dynamic_mappings: {
+        files: [
+          {
+            expand: true,
+            cwd: 'es6-compiled',
+            src: ['**/*.react.js'],
+            dest: 'jsx-compiled/'
           }
         ]
       }
     }
-
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -78,10 +127,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks("grunt-webpack");
   grunt.loadNpmTasks("grunt-6to5");
+  grunt.loadNpmTasks("grunt-react");
 
   grunt.registerTask('pack', ['webpack:build']);
   grunt.registerTask('compile', ['6to5']);
   grunt.registerTask('build', ['copy', 'compile', 'webpack:build']);
+  grunt.registerTask('local-deploy', ['build', 'copy:local-dist']);
   grunt.registerTask('default', ['build']);
+
 
 };

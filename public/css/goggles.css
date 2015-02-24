@@ -1,9 +1,18 @@
 body {
     padding-top: 50px;
+    background-color: #999999;
+}
+
+.navbar {
+    max-width: 600px;
 }
 
 .report-table .panel-group {
     margin-bottom: 0;
+}
+
+#dynamic-content {
+    max-width: 600px;
 }
 
 #report-container .panel {
@@ -22,4 +31,15 @@ body {
 #report-container .panel-body {
     padding-bottom: 0;
     padding-top: 0;
+}
+
+#loadingIndicator {
+    text-align: center;
+}
+
+.blankSlate {
+    margin-top: 50px;
+}
+.blankSlate .panel-body{
+    text-align: center;
 }
