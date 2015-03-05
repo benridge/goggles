@@ -37,7 +37,8 @@ module.exports = function(grunt) {
           jquery: true,
           lodash: "_",
           superagent: true,
-          react: "React"
+          react: "React",
+          moment: true
         },
 
         debug: true,
@@ -93,6 +94,13 @@ module.exports = function(grunt) {
             cwd: 'node_modules/superagent',
             src: 'superagent.js',
             dest: 'public/lib/superagent/dist/',
+            filter: 'isFile'
+          },
+          {
+            expand: true,
+            cwd: 'node_modules/moment',
+            src: 'moment.js',
+            dest: 'public/lib/moment/dist/',
             filter: 'isFile'
           }
         ]
