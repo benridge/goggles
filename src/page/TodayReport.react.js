@@ -37,6 +37,7 @@ module.exports = React.createClass({
   render: function() {
     var table = this._getTable();
     var blankSlate = this._getBlankSlate();
+    var header = this._getHeader();
 
     return (
       <div id="report-container">
@@ -44,8 +45,9 @@ module.exports = React.createClass({
         <LoadingIndicator loading={ this.state.loading} />
 
         <div className="list-group">
-          <div className="list-group-item active">Latest 24 Hour Reports</div>
+          <div id="report-title" className="list-group-item active">Latest 24 Hour Reports</div>
           { blankSlate }
+          { header }
           { table }
         </div>
       </div>
@@ -55,8 +57,7 @@ module.exports = React.createClass({
   _getTable: function() {
     if (this.state.locations.length > 0) {
       var locations = this._getLocations();
-      var header = this._getHeader();
-      return [{ header }, { locations }];
+      return { locations };
     }
   },
 
@@ -76,12 +77,14 @@ module.exports = React.createClass({
 
   _getHeader: function() {
     return (
-      <div className="list-group-item-info">
-        <div className="row">
-          <div className="col-xs-1"></div>
-          <div className="col-xs-5" onClick={this._sortReport}>Location</div>
-          <div className="col-xs-2" onClick={this._sortReport}>Amount</div>
-          <div className="col-xs-4" onClick={this._sortReport}>Date</div>
+      <div data-spy="affix" data-offset-top="100" className="report-column-header">
+        <div className="list-group-item-info">
+          <div className="row">
+            <div className="col-xs-1"></div>
+            <div className="col-xs-5" onClick={this._sortReport}>Location</div>
+            <div className="col-xs-2" onClick={this._sortReport}>Amount</div>
+            <div className="col-xs-4" onClick={this._sortReport}>Date</div>
+          </div>
         </div>
       </div>
     );
@@ -90,7 +93,7 @@ module.exports = React.createClass({
   _getLocations: function() {
     return _.map(this.state.locations, (locationData, index)  => {
       return (
-        <div className="list-group-item">
+        <div className="list-group-item location-row">
           <LocationReportRow
             key={ index }
             idx={ index }

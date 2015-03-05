@@ -21,6 +21,16 @@ body {
   border: 0;
 }
 
+#report-title {
+  padding: 10px 5px;
+  font-size: large;
+}
+
+.report-column-header.affix {
+  top: 0;
+  width: 598px;
+  z-index: 3;
+}
 
 #report-container .panel-heading {
   padding-bottom: 10px;
@@ -37,7 +47,7 @@ body {
   padding-top: 0;
 }
 
-#report-container .list-group-item {
+#report-container .location-row {
   padding: 0;
 }
 
