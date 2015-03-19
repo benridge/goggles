@@ -23,7 +23,7 @@ module.exports = React.createClass({
     var altText = this.props.name + " report details";
     var formattedDate = DateFormatter.formatDateString(this.props.date);
     var amountCategory = AmountFormatter.getAmountCategory(this.props.amount, 24);
-    var amountClasses = "col-xs-2 amount-" + amountCategory;
+    var amountClasses = "col-xs-1 amount-" + amountCategory;
 
     return (
       <div className="panel panel-default">
@@ -35,7 +35,7 @@ module.exports = React.createClass({
                   <span className="glyphicon glyphicon-chevron-down"></span>
                 </a>
               </div>
-              <div className="col-xs-5">{ this.props.name }</div>
+              <div className="col-xs-5 col-s-7">{ this.props.name }</div>
               <div className={ amountClasses }>{ this.props.amount }"</div>
               <div className="col-xs-4 report-date">{ formattedDate }</div>
             </div>
@@ -46,10 +46,10 @@ module.exports = React.createClass({
             <div className="row">
               <div className="col-xs-1"></div>
               <a href={ this.props.sourceUrl }>
-                <div className="col-xs-5">{ this.props.source }</div>
+                <div className="col-xs-5 col-s-7">{ this.props.source }</div>
               </a>
-              <div className="col-xs-2">{ this.props.amount }"</div>
-              <div className="col-xs-3">{ formattedDate }</div>
+              <div className="col-xs-1">{ this.props.amount }"</div>
+              <div className="col-xs-4">{ formattedDate }</div>
             </div>
           </div>
         </div>

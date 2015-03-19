@@ -13,7 +13,7 @@ var LoadingIndicator = require('./../component/LoadingIndicator.react');
 var NavBar = require('./../component/NavBar.react');
 
 module.exports = React.createClass({
-  displayName: 'TodayReport',
+  displayName: 'LatestReport',
   getInitialState: function() {
     return {
       locations: [],
@@ -23,7 +23,7 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     request
-      .get(ServerConfig.TOMCAT_URL + '/FindpowReport/index.json?snowReportType=today')
+      .get(ServerConfig.TOMCAT_URL + '/FindpowReport/index.json?snowReportType=latest')
       .end((res) => {
         var report = JSON.parse(res.text).report;
 
@@ -45,7 +45,7 @@ module.exports = React.createClass({
         <LoadingIndicator loading={ this.state.loading} />
 
         <div className="list-group">
-          <div id="report-title" className="list-group-item active">Today's Reports</div>
+          <div id="report-title" className="list-group-item active">Latest 24 Hour Reports</div>
           { blankSlate }
           { header }
           { table }
