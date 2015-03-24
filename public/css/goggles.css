@@ -4,7 +4,7 @@ body {
 }
 
 .navbar {
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .report-table .panel-group {
@@ -12,7 +12,7 @@ body {
 }
 
 #dynamic-content {
-  max-width: 580px;
+  max-width: 600px;
 }
 
 #report-container .panel {
@@ -26,10 +26,9 @@ body {
   font-size: large;
 }
 
-.report-column-header.affix {
-  top: 0;
-  width: 100%;
-  z-index: 3;
+.column-header .row {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 #report-container .panel-heading {
@@ -78,6 +77,21 @@ body {
   background-color: #ff00000;
 }
 
+/* really small devices still wrap columns without this */
+.row .col-xs-1, .row .col-xs-2, .row .col-xs-3, .row .col-xs-4, .row .col-xs-5, .row .col-xs-6, .row .col-xs-7, .row .col-xs-8 {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.row .expander-link {
+  display: block;
+  text-align: center;
+}
+
+.row .duration {
+  white-space: nowrap;
+}
+
 #loadingIndicator {
   text-align: center;
 }
@@ -88,3 +102,4 @@ body {
 .blankSlate .panel-body{
   text-align: center;
 }
+

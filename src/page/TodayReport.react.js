@@ -8,9 +8,17 @@ var _ = require('lodash');
 
 var ServerConfig = require('../../server/common').config();
 
-var LocationReportRow = require('./../component/LocationReportRow.react');
+var GroupRow = require('./../component/GroupRow.react');
+var DetailRow = require('./../component/DetailRow.react');
 var LoadingIndicator = require('./../component/LoadingIndicator.react');
-var NavBar = require('./../component/NavBar.react');
+var DateFormatter = require('../util/DateFormatter');
+
+var columnSizeCssMap = {
+  'duration': 'col-xs-1',
+  'name': 'col-xs-6 col-s-8',
+  'amount': 'col-xs-1',
+  'date': 'col-xs-4 col-s-2'
+};
 
 module.exports = React.createClass({
   displayName: 'TodayReport',
@@ -77,34 +85,67 @@ module.exports = React.createClass({
 
   _getHeader: function() {
     return (
-      <div data-spy="affix" data-offset-top="50" className="report-column-header">
-        <div className="list-group-item-info">
-          <div className="row">
-            <div className="col-xs-1"></div>
-            <div className="col-xs-5 col-s-7" onClick={this._sortReport}>Location</div>
-            <div className="col-xs-1" onClick={this._sortReport}></div>
-            <div className="col-xs-4" onClick={this._sortReport}>Date</div>
-          </div>
+      <div className="list-group-item-info column-header">
+        <div className="row">
+          <div className={ columnSizeCssMap.duration }></div>
+          <div className={ columnSizeCssMap.name } onClick={this._sortReport}>Location</div>
+          <div className={ columnSizeCssMap.amount } onClick={this._sortReport}></div>
+          <div className={ columnSizeCssMap.date } onClick={this._sortReport}>Updated</div>
         </div>
       </div>
     );
   },
 
   _getLocations: function() {
-    return _.map(this.state.locations, (locationData, index)  => {
-      return (
-        <div className="list-group-item location-row">
-          <LocationReportRow
-            key={ index }
-            idx={ index }
-            name={ locationData.location }
-            date={ locationData.source_date }
-            amount={ locationData.amount }
-            source={ locationData.source_name }
-            sourceUrl={ locationData.url }
-          />
-        </div>
+
+    var locationMap = _.reduce(this.state.locations, (result, locationData) => {
+      result[locationData.location] = result[locationData.location] || [];
+      result[locationData.location].push(locationData);
+      return result;
+    }, {});
+
+    return _.reduce(locationMap, (result, locationArray) => {
+      var groupRowData = locationArray[0];
+      var detailRows = this._getDetailRows(locationArray);
+      var formattedDate = DateFormatter.formatTodayDate(groupRowData.source_date);
+      result.push(
+        <GroupRow
+          key={ groupRowData.ROW_NUM }
+          idx={ groupRowData.ROW_NUM }
+          name={ groupRowData.location }
+          date={ formattedDate }
+          amount={ groupRowData.amount }
+          source={ groupRowData.source_name }
+          sourceUrl={ groupRowData.url }
+        >
+          { detailRows }
+        </GroupRow>
       );
-    });
+      return result;
+    }, []);
+  },
+
+  _getDetailRows: function(detailRowDataArray) {
+    var duration;
+    var prevDuration = 0;
+    var formattedDate;
+    return _.reduce(detailRowDataArray, (result, detailRowData) => {
+      duration = detailRowData.duration !== prevDuration ? detailRowData.duration : 0;
+      prevDuration = detailRowData.duration;
+      formattedDate = DateFormatter.formatTodayDate(detailRowData.source_date);
+
+
+      result.push(
+        <DetailRow
+          key={ detailRowData.ROW_NUM }
+          date={ formattedDate }
+          duration={ duration }
+          amount={ detailRowData.amount }
+          source={ detailRowData.source_name }
+          sourceUrl={ detailRowData.url }
+        />
+      );
+      return result;
+    }, []);
   }
 });
