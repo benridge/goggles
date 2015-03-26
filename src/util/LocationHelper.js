@@ -1,6 +1,8 @@
 var LocationHelper = {
   orderBy: function(dataIndex, groupedLocations, order) {
-    var sorted = _.sortBy(groupedLocations, dataIndex);
+    var orderIndexes = _.union([dataIndex], _.keys(groupedLocations[0]));
+    var sorted = _.sortByAll(groupedLocations, orderIndexes);
+
     if (order === 'descending') {
       sorted = sorted.reverse();
     }
@@ -9,10 +11,10 @@ var LocationHelper = {
 
   map: function(locationArray) {
     return _.reduce(locationArray, (result, locationData) => {
-      var groupedReports = _.find(result, { 'name' : locationData.location });
+      var groupedReports = _.find(result, { 'location' : locationData.location });
       if (!groupedReports) {
         groupedReports = {
-          name: locationData.location,
+          location: locationData.location,
           amount: locationData.amount,
           reports: []
         };

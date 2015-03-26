@@ -35,7 +35,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    LocationStore.loadTestData('/FindpowReport/index.json?snowReportType=today')
+    LocationStore.load('/FindpowReport/index.json?snowReportType=today')
                  .then(this._onLocationsLoaded);
   },
 
@@ -84,7 +84,7 @@ module.exports = React.createClass({
       <div className="list-group-item-info column-header">
         <div className="row">
           <div className={ columnSizeCssMap.duration }></div>
-          <div className={ columnSizeCssMap.name }>Location</div>
+          <div className={ columnSizeCssMap.name } onClick={this._sortReport}>Location</div>
           <div className={ columnSizeCssMap.amount } onClick={this._sortReport}>Amount</div>
           <div className={ columnSizeCssMap.date }>Last Updated</div>
         </div>
@@ -147,22 +147,23 @@ module.exports = React.createClass({
   },
 
   _sortReport: function(event) {
-    var direction;
+    var direction, dataIndex;
     if (event.target.textContent === 'Amount') {
-      if (this.state.order.dataIndex === 'amount') {
-        direction = this.state.order.direction === 'ascending' ? 'descending' : 'ascending';
-      } else {
-        direction = 'descending';
-      }
-      var groupedLocations = LocationHelper.orderBy('amount', this.state.groupedLocations, direction);
-      this.setState({
-        groupedLocations: groupedLocations,
-        order: {
-          dataIndex: 'amount',
-          direction: direction
-        }});
+      dataIndex = 'amount';
+      direction = 'descending';
     } else if (event.target.textContent === 'Location') {
-      //TODO
+      dataIndex = 'location';
+      direction = 'ascending';
     }
+    var groupedLocations = LocationHelper.orderBy(dataIndex, this.state.groupedLocations, direction);
+
+    this.setState({
+      groupedLocations: groupedLocations,
+      order: {
+        dataIndex: dataIndex,
+        direction: direction
+      }
+    });
+
   }
 });
