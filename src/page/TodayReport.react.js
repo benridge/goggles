@@ -66,7 +66,7 @@ module.exports = React.createClass({
 
   _getBlankSlate: function() {
     var blankSlateClassNames = "";
-    var showBlankSlate = _.keys(this.state.locationMap).length === 0 && this.state.loading === false;
+    var showBlankSlate = _.keys(this.state.groupedLocations).length === 0 && this.state.loading === false;
     if (showBlankSlate) {
       return (
         <div className="list-group-item">
