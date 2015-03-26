@@ -8,6 +8,7 @@
     "url": "https://github.com/benridge/goggles"
   },
   "scripts": {
+    "start": "node server/node-server.js",
     "compile": "6to5 --modules common public/js --out-dir public/dist"
   },
   "main": "server/node-server.js",

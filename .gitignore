@@ -4,4 +4,4 @@ node_modules
 *.iml
 es6-compiled
 public/dist
-
+npm-debug.log
