@@ -10,6 +10,7 @@
   "scripts": {
     "compile": "6to5 --modules common public/js --out-dir public/dist"
   },
+  "main": "server/node-server.js",
   "dependencies": {
     "bootstrap": "3.3.2",
     "browserify": "^8.1.3",

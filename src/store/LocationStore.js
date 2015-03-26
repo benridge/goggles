@@ -1,11 +1,11 @@
 var request = require('superagent');
-var ServerConfig = require('../../server/common').config();
+var Environment = require('../env/Environment');
 
 var LocationStore = {
   load: function(url) {
     return new Promise((resolve, reject) => {
       request
-        .get(ServerConfig.TOMCAT_URL + url)
+        .get(Environment.getServerRoot() + url)
         .end((res) => {
           var report = JSON.parse(res.text).report;
           resolve(report.locations);
