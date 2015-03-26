@@ -6,7 +6,7 @@ var React = require('react');
 var request = require('superagent');
 var _ = require('lodash');
 
-var ServerConfig = require('../../server/common').config();
+var LocationStore = require('../store/LocationStore');
 
 var LocationReportRow = require('./../component/LocationReportRow.react');
 var LoadingIndicator = require('./../component/LoadingIndicator.react');
@@ -22,13 +22,10 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    request
-      .get(ServerConfig.TOMCAT_URL + '/FindpowReport/index.json?snowReportType=latest')
-      .end((res) => {
-        var report = JSON.parse(res.text).report;
-
+    LocationStore.load('/FindpowReport/index.json?snowReportType=latest')
+      .then((locations) => {
         this.setState({
-          locations: report.locations,
+          locations: locations,
           loading: false
         });
       });

@@ -3,14 +3,18 @@ var Environment = require('../env/Environment');
 
 var LocationStore = {
   load: function(url) {
-    return new Promise((resolve, reject) => {
-      request
-        .get(Environment.getServerRoot() + url)
-        .end((res) => {
-          var report = JSON.parse(res.text).report;
-          resolve(report.locations);
-        });
+    return Environment.getServerConfig().then((ServerConfig)=> {
+      var serverRoot = ServerConfig.TOMCAT_URL;
+      return new Promise((resolve, reject) => {
+        request
+          .get(serverRoot + url)
+          .end((res) => {
+            var report = JSON.parse(res.text).report;
+            resolve(report.locations);
+          });
+      });
     });
+
   },
 
   loadTestData: function(url) {

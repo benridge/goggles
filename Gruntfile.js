@@ -58,6 +58,10 @@ module.exports = function(grunt) {
             {
               test: /\.js$/,
               loader: 'jsx-loader?harmony'
+            },
+            {
+              test: /\.json$/,
+              loader: 'json-loader'
             }
           ]
         }

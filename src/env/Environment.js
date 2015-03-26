@@ -1,6 +1,24 @@
+var request = require('superagent');
+
+var serverConfig;
+
 var Environment = {
-  getServerRoot: function() {
-    return (window.location.origin || (document.location.protocol + "//" + document.location.host)) + ':8080';
+  getServerConfig: function() {
+
+    return new Promise((resolve, reject) => {
+      if (serverConfig) {
+        resolve(serverConfig);
+      } else {
+        request
+          .get('/environment.js')
+          .end((res) => {
+            var env = res.body;
+            serverConfig = env;
+
+            resolve(env);
+          });
+      }
+      });
   }
 };
 

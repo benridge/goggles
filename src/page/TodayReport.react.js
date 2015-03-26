@@ -3,7 +3,6 @@
  */
 
 var React = require('react');
-var request = require('superagent');
 var _ = require('lodash');
 
 var LocationStore = require('../store/LocationStore');
@@ -84,8 +83,8 @@ module.exports = React.createClass({
       <div className="list-group-item-info column-header">
         <div className="row">
           <div className={ columnSizeCssMap.duration }></div>
-          <div className={ columnSizeCssMap.name } onClick={this._sortReport}>Location</div>
-          <div className={ columnSizeCssMap.amount } onClick={this._sortReport}>Amount</div>
+          <div className={ columnSizeCssMap.name }><a href="#" onClick={this._sortReport}>Location</a></div>
+          <div className={ columnSizeCssMap.amount }><a href="#" onClick={this._sortReport}>Amount</a></div>
           <div className={ columnSizeCssMap.date }>Last Updated</div>
         </div>
       </div>
