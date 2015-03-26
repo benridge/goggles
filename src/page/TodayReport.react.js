@@ -6,40 +6,37 @@ var React = require('react');
 var request = require('superagent');
 var _ = require('lodash');
 
-var ServerConfig = require('../../server/common').config();
+var LocationStore = require('../store/LocationStore');
 
 var GroupRow = require('./../component/GroupRow.react');
 var DetailRow = require('./../component/DetailRow.react');
 var LoadingIndicator = require('./../component/LoadingIndicator.react');
 var DateFormatter = require('../util/DateFormatter');
+var LocationHelper = require('../util/LocationHelper');
 
 var columnSizeCssMap = {
   'duration': 'col-xs-1',
-  'name': 'col-xs-6 col-s-8',
-  'amount': 'col-xs-1',
-  'date': 'col-xs-4 col-s-2'
+  'name': 'col-xs-5',
+  'amount': 'col-xs-2',
+  'date': 'col-xs-4'
 };
 
 module.exports = React.createClass({
   displayName: 'TodayReport',
   getInitialState: function() {
     return {
-      locations: [],
-      loading: true
+      groupedLocations: [],
+      loading: true,
+      order: {
+        dataIndex: 'location',
+        direction: 'ascending'
+      }
     };
   },
 
   componentDidMount: function() {
-    request
-      .get(ServerConfig.TOMCAT_URL + '/FindpowReport/index.json?snowReportType=today')
-      .end((res) => {
-        var report = JSON.parse(res.text).report;
-
-        this.setState({
-          locations: report.locations,
-          loading: false
-        });
-      });
+    LocationStore.loadTestData('/FindpowReport/index.json?snowReportType=today')
+                 .then(this._onLocationsLoaded);
   },
 
   render: function() {
@@ -63,15 +60,14 @@ module.exports = React.createClass({
   },
 
   _getTable: function() {
-    if (this.state.locations.length > 0) {
-      var locations = this._getLocations();
-      return { locations };
+    if (this.state.groupedLocations.length > 0) {
+      return  this._getLocations();
     }
   },
 
   _getBlankSlate: function() {
     var blankSlateClassNames = "";
-    var showBlankSlate = this.state.locations.length === 0 && this.state.loading === false;
+    var showBlankSlate = _.keys(this.state.locationMap).length === 0 && this.state.loading === false;
     if (showBlankSlate) {
       return (
         <div className="list-group-item">
@@ -88,25 +84,18 @@ module.exports = React.createClass({
       <div className="list-group-item-info column-header">
         <div className="row">
           <div className={ columnSizeCssMap.duration }></div>
-          <div className={ columnSizeCssMap.name } onClick={this._sortReport}>Location</div>
-          <div className={ columnSizeCssMap.amount } onClick={this._sortReport}></div>
-          <div className={ columnSizeCssMap.date } onClick={this._sortReport}>Updated</div>
+          <div className={ columnSizeCssMap.name }>Location</div>
+          <div className={ columnSizeCssMap.amount } onClick={this._sortReport}>Amount</div>
+          <div className={ columnSizeCssMap.date }>Last Updated</div>
         </div>
       </div>
     );
   },
 
   _getLocations: function() {
-
-    var locationMap = _.reduce(this.state.locations, (result, locationData) => {
-      result[locationData.location] = result[locationData.location] || [];
-      result[locationData.location].push(locationData);
-      return result;
-    }, {});
-
-    return _.reduce(locationMap, (result, locationArray) => {
-      var groupRowData = locationArray[0];
-      var detailRows = this._getDetailRows(locationArray);
+    return _.reduce(this.state.groupedLocations, (result, groupedLocation) => {
+      var groupRowData = groupedLocation.reports[0];
+      var detailRows = this._getDetailRows(groupedLocation.reports);
       var formattedDate = DateFormatter.formatTodayDate(groupRowData.source_date);
       result.push(
         <GroupRow
@@ -147,5 +136,33 @@ module.exports = React.createClass({
       );
       return result;
     }, []);
+  },
+
+  _onLocationsLoaded: function(locations) {
+    var groupedLocations = LocationHelper.map(locations);
+    this.setState({
+      groupedLocations: groupedLocations,
+      loading: false
+    });
+  },
+
+  _sortReport: function(event) {
+    var direction;
+    if (event.target.textContent === 'Amount') {
+      if (this.state.order.dataIndex === 'amount') {
+        direction = this.state.order.direction === 'ascending' ? 'descending' : 'ascending';
+      } else {
+        direction = 'descending';
+      }
+      var groupedLocations = LocationHelper.orderBy('amount', this.state.groupedLocations, direction);
+      this.setState({
+        groupedLocations: groupedLocations,
+        order: {
+          dataIndex: 'amount',
+          direction: direction
+        }});
+    } else if (event.target.textContent === 'Location') {
+      //TODO
+    }
   }
 });

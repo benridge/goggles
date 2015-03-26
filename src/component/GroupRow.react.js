@@ -22,7 +22,7 @@ module.exports = React.createClass({
     var href = "#" + collapseId;
     var altText = this.props.name + " report details";
     var amountCategory = AmountFormatter.getAmountCategory(this.props.amount, 24);
-    var amountClasses = "col-xs-1 amount-" + amountCategory;
+    var amountClasses = "col-xs-2 amount-" + amountCategory;
 
     return (
       <div className="panel panel-default">
@@ -34,9 +34,9 @@ module.exports = React.createClass({
                   <span className="glyphicon glyphicon-chevron-down"></span>
                 </a>
               </div>
-              <div className="col-xs-6 col-s-8 name">{ this.props.name }</div>
+              <div className="col-xs-5 name">{ this.props.name }</div>
               <div className={ amountClasses }>{ this.props.amount }"</div>
-              <div className="col-xs-4 col-s-2 report-date">{ this.props.date }</div>
+              <div className="col-xs-4 report-date">{ this.props.date }</div>
             </div>
           </h3>
         </div>
