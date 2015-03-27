@@ -29,14 +29,15 @@ module.exports = React.createClass({
         <div className="panel-heading">
           <h3 className="panel-title">
             <div className="row">
-              <div className="col-xs-1">
+              <div className="col-xs-1 expander-cell">
                 <a className="expander-link collapsed" data-toggle="collapse" href={ href }  title={ altText } aria-expanded="false" aria-controls={ collapseId }>
                   <span className="glyphicon glyphicon-chevron-down"></span>
                 </a>
               </div>
               <div className="col-xs-5 name">{ this.props.name }</div>
+              <div className="col-xs-2 duration"></div>
               <div className={ amountClasses }>{ this.props.amount }"</div>
-              <div className="col-xs-4 report-date">{ this.props.date }</div>
+              <div className="col-xs-2 report-date">{ this.props.date }</div>
             </div>
           </h3>
         </div>

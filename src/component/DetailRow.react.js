@@ -14,14 +14,15 @@ module.exports = React.createClass({
     var duration = this._formatDuration();
     return (
       <div className="row">
-        <div className="col-xs-1 duration">{ duration }</div>
+        <div className="col-xs-1 expander-cell"></div>
           <div className="col-xs-5 name">
             <a href={ this.props.sourceUrl }>
               { this.props.source }
             </a>
           </div>
+        <div className="col-xs-2 duration">{ duration }</div>
         <div className="col-xs-2">{ this.props.amount }"</div>
-        <div className="col-xs-4">{ this.props.date }</div>
+        <div className="col-xs-2">{ this.props.date }</div>
       </div>
     );
   },

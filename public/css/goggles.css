@@ -1,10 +1,5 @@
 body {
-  /*padding-top: 50px;*/
   background-color: #999999;
-}
-
-.navbar {
-  max-width: 500px;
 }
 
 .report-table .panel-group {
@@ -13,6 +8,7 @@ body {
 
 #dynamic-content {
   max-width: 600px;
+  min-width: 300px;
 }
 
 #report-container .panel {
@@ -83,6 +79,12 @@ body {
   padding-right: 5px;
 }
 
+.row .expander-cell {
+  padding-left: 10px;
+  padding-right: 0;
+  width: 30px;
+}
+
 .row .expander-link {
   display: block;
   text-align: center;
@@ -90,6 +92,7 @@ body {
 
 .row .duration {
   white-space: nowrap;
+  text-align: right;
 }
 
 #loadingIndicator {

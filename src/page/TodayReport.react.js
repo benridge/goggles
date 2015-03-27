@@ -14,10 +14,11 @@ var DateFormatter = require('../util/DateFormatter');
 var LocationHelper = require('../util/LocationHelper');
 
 var columnSizeCssMap = {
-  'duration': 'col-xs-1',
+  'expander': 'col-xs-1',
+  'duration': 'col-xs-2',
   'name': 'col-xs-5',
   'amount': 'col-xs-2',
-  'date': 'col-xs-4'
+  'date': 'col-xs-2'
 };
 
 module.exports = React.createClass({
@@ -82,10 +83,11 @@ module.exports = React.createClass({
     return (
       <div className="list-group-item-info column-header">
         <div className="row">
-          <div className={ columnSizeCssMap.duration }></div>
+          <div className={ columnSizeCssMap.expander + ' expander-cell' }></div>
           <div className={ columnSizeCssMap.name }><a href="#" onClick={this._sortReport}>Location</a></div>
+          <div className={ columnSizeCssMap.duration }></div>
           <div className={ columnSizeCssMap.amount }><a href="#" onClick={this._sortReport}>Amount</a></div>
-          <div className={ columnSizeCssMap.date }>Last Updated</div>
+          <div className={ columnSizeCssMap.date }>Updated</div>
         </div>
       </div>
     );
