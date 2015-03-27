@@ -25,6 +25,8 @@ body {
 .column-header .row {
   margin-left: 0;
   margin-right: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 #report-container .panel-heading {

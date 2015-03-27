@@ -25,6 +25,7 @@ module.exports = React.createClass({
   displayName: 'TodayReport',
   getInitialState: function() {
     return {
+      expandAll: false,
       groupedLocations: [],
       loading: true,
       order: {
@@ -80,10 +81,16 @@ module.exports = React.createClass({
   },
 
   _getHeader: function() {
+    var glyphiconDirection = 'glyphicon-chevron-right';
+    if (this.state.expandAll === true) {
+      glyphiconDirection = 'glyphicon-chevron-down';
+    }
     return (
       <div className="list-group-item-info column-header">
         <div className="row">
-          <div className={ columnSizeCssMap.expander + ' expander-cell' }></div>
+          <div className={ columnSizeCssMap.expander + ' expander-cell' }>
+            <a href="#" onClick={ this._onExpandAll }><span className={ 'glyphicon ' + glyphiconDirection }></span></a>
+          </div>
           <div className={ columnSizeCssMap.name }><a href="#" onClick={this._sortReport}>Location</a></div>
           <div className={ columnSizeCssMap.duration }></div>
           <div className={ columnSizeCssMap.amount }><a href="#" onClick={this._sortReport}>Amount</a></div>
@@ -107,6 +114,7 @@ module.exports = React.createClass({
           amount={ groupRowData.amount }
           source={ groupRowData.source_name }
           sourceUrl={ groupRowData.url }
+          initExpanded={ this.state.expandAll }
         >
           { detailRows }
         </GroupRow>
@@ -165,6 +173,11 @@ module.exports = React.createClass({
         direction: direction
       }
     });
+  },
 
+  _onExpandAll: function() {
+      this.setState({
+        expandAll: !this.state.expandAll
+      });
   }
 });
