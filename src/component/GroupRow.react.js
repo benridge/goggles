@@ -3,10 +3,15 @@
  */
 
 var React = require('react');
-var DateFormatter = require('../util/DateFormatter');
 var AmountFormatter = require('../util/AmountFormatter');
 
 module.exports = React.createClass({
+
+  getInitialState: function() {
+    return {
+      glyphicon: 'glyphicon-chevron-right'
+    };
+  },
 
   propTypes: {
     idx: React.PropTypes.number,
@@ -28,17 +33,24 @@ module.exports = React.createClass({
       <div className="panel panel-default">
         <div className="panel-heading">
           <h3 className="panel-title">
-            <div className="row">
-              <div className="col-xs-1 expander-cell">
-                <a className="expander-link collapsed" data-toggle="collapse" href={ href }  title={ altText } aria-expanded="false" aria-controls={ collapseId }>
-                  <span className="glyphicon glyphicon-chevron-down"></span>
-                </a>
+            <a className="expander-link collapsed"
+              data-toggle="collapse"
+              href={ href }
+              title={ altText }
+              aria-expanded="false"
+              aria-controls={ collapseId }
+              onClick={ this._onExpand }
+            >
+              <div className="row">
+                <div className="col-xs-1 expander-cell">
+                  <span className={ 'glyphicon ' + this.state.glyphicon }></span>
+                </div>
+                <div className="col-xs-5 name">{ this.props.name }</div>
+                <div className="col-xs-2 duration"></div>
+                <div className={ amountClasses }>{ this.props.amount }"</div>
+                <div className="col-xs-2 report-date">{ this.props.date }</div>
               </div>
-              <div className="col-xs-5 name">{ this.props.name }</div>
-              <div className="col-xs-2 duration"></div>
-              <div className={ amountClasses }>{ this.props.amount }"</div>
-              <div className="col-xs-2 report-date">{ this.props.date }</div>
-            </div>
+            </a>
           </h3>
         </div>
         <div className="collapse" id={ collapseId }>
@@ -48,5 +60,18 @@ module.exports = React.createClass({
         </div>
       </div>
     );
+  },
+
+  _onExpand: function() {
+    if (this.state.glyphicon === 'glyphicon-chevron-right') {
+      this.setState({
+        glyphicon: 'glyphicon-chevron-down'
+      });
+    } else {
+      this.setState({
+        glyphicon: 'glyphicon-chevron-right'
+      });
+    }
   }
 });
+
