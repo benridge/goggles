@@ -1,18 +1,16 @@
-module.exports = function(grunt) {
+var webpackConfig = require('./webpack.config.js');
 
+module.exports = function(grunt) {
+  require('load-grunt-tasks')(grunt);
   grunt.initConfig({
-    "6to5": {
+    "eslint": {
       options: {
-        sourceMap: 'inline'
+        format: 'tap'
       },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: 'src',
-          src: ['**/*.js'],
-          dest: 'es6-compiled'
-        }]
-      }
+      target: ['src/**/*.js']
+    },
+    htmllint: {
+        all: ['public/index.html']
     },
     jshint: {
       files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
@@ -23,56 +21,19 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['<%= jshint.files %>'],
-      tasks: ['jshint']
+      files: ['Gruntfile.js', 'webpack.config.js', 'src/**/*.js', 'test/**/*.js'],
+      tasks: ['webpack']
     },
-    webpack: {
-      options: {
-        entry: "./src/init.react.js",
-        output: {
-          path: './public/dist',
-          filename: 'webpack_bundle.js'
-        },
-        externals: {
-          jquery: true,
-          lodash: "_",
-          superagent: true,
-          react: "React",
-          moment: true
-        },
-
-        debug: true,
-        devtool: "#inline-source-map",
-        module: {
-          preLoaders: [
-            {
-              test: /\.js$/,
-              loader: "source-map-loader"
-            }
-          ],
-          loaders: [
-            {
-              test: /\.css$/,
-              loader: "style!css"
-            },
-            {
-              test: /\.js$/,
-              loader: 'jsx-loader?harmony'
-            },
-            {
-              test: /\.json$/,
-              loader: 'json-loader'
-            }
-          ]
-        }
-      },
-      build: {
-
-      }
-    },
+    webpack: webpackConfig(),
     copy: {
       main: {
         files: [
+          {
+            expand: true,
+            cwd: 'node_modules/react/dist/',
+            src: 'react.js',
+            dest: 'public/lib/react/dist/'
+          },
           {
             expand: true,
             cwd: 'node_modules/bootstrap/dist/',
@@ -138,14 +99,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks("grunt-webpack");
-  grunt.loadNpmTasks("grunt-6to5");
   grunt.loadNpmTasks("grunt-react");
 
   grunt.registerTask('pack', ['webpack:build']);
-  grunt.registerTask('compile', ['6to5']);
-  grunt.registerTask('build', ['copy', 'compile', 'webpack:build']);
+  // eslint throwing errors on valid jsx, need to investigate
+  grunt.registerTask('lint', ['eslint', 'htmllint']);
+  grunt.registerTask('build', ['copy', 'webpack']);
   grunt.registerTask('local-deploy', ['build', 'copy:local-dist']);
   grunt.registerTask('default', ['build']);
-
-
 };

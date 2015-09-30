@@ -1,54 +1,38 @@
-/**
- * @jsx React.DOM
- */
+import React, { Component, PropTypes }  from 'react';
+import _ from 'lodash';
+import { connect } from 'react-redux';
 
-var React = require('react');
-var _ = require('lodash');
+import ColumnHeader from './../component/ColumnHeader.react';
+import GroupRow from './../component/GroupRow.react';
+import DetailRow from './../component/DetailRow.react';
+import LoadingIndicator from './../component/LoadingIndicator.react';
+import * as DateFormatter from '../utils/DateFormatter';
+import { loadLocations, expandAll, expandRowToggle, sort } from '../actions/LocationsActions';
 
-var LocationStore = require('../store/LocationStore');
+class TodayReport extends Component {
 
-var GroupRow = require('./../component/GroupRow.react');
-var DetailRow = require('./../component/DetailRow.react');
-var LoadingIndicator = require('./../component/LoadingIndicator.react');
-var DateFormatter = require('../util/DateFormatter');
-var LocationHelper = require('../util/LocationHelper');
+  constructor(props) {
+    super(props);
+    this._onExpandAll = this._onExpandAll.bind(this);
+    this._sortReport = this._sortReport.bind(this);
+    this._getHeader = this._getHeader.bind(this);
+  }
 
-var columnSizeCssMap = {
-  'expander': 'col-xs-1',
-  'duration': 'col-xs-2',
-  'name': 'col-xs-5',
-  'amount': 'col-xs-2',
-  'date': 'col-xs-2'
-};
+  componentDidMount() {
+    if (this.props.locations.length === 0) {
+      this.props.dispatch(loadLocations());
+    }
+  }
 
-module.exports = React.createClass({
-  displayName: 'TodayReport',
-  getInitialState: function() {
-    return {
-      expandAll: false,
-      groupedLocations: [],
-      loading: true,
-      order: {
-        dataIndex: 'location',
-        direction: 'ascending'
-      }
-    };
-  },
-
-  componentDidMount: function() {
-    LocationStore.load('/FindpowReport/index.json?snowReportType=today')
-                 .then(this._onLocationsLoaded);
-  },
-
-  render: function() {
-    var table = this._getTable();
-    var blankSlate = this._getBlankSlate();
-    var header = this._getHeader();
+  render() {
+    const table = this._getTable();
+    const blankSlate = this._getBlankSlate();
+    const header = this._getHeader();
 
     return (
       <div id="report-container">
 
-        <LoadingIndicator loading={ this.state.loading} />
+        <LoadingIndicator loading={ this.props.loading} />
 
         <div className="list-group">
           <div id="report-title" className="list-group-item active">Today's Reports</div>
@@ -58,53 +42,42 @@ module.exports = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _getTable: function() {
-    if (this.state.groupedLocations.length > 0) {
+  _getTable() {
+    if (this.props.locations.length > 0) {
       return  this._getLocations();
     }
-  },
+  }
 
-  _getBlankSlate: function() {
-    var blankSlateClassNames = "";
-    var showBlankSlate = _.keys(this.state.groupedLocations).length === 0 && this.state.loading === false;
+  _getBlankSlate() {
+    const showBlankSlate = _.keys(this.props.locations).length === 0 && this.props.loading === false;
     if (showBlankSlate) {
       return (
         <div className="list-group-item">
-          <div className={ blankSlateClassNames }>
+          <div>
             No reports yet for today.
           </div>
         </div>
       );
     }
-  },
+  }
 
-  _getHeader: function() {
-    var glyphiconDirection = 'glyphicon-chevron-right';
-    if (this.state.expandAll === true) {
-      glyphiconDirection = 'glyphicon-chevron-down';
-    }
+  _getHeader() {
     return (
-      <div className="list-group-item-info column-header">
-        <div className="row">
-          <div className={ columnSizeCssMap.expander + ' expander-cell' }>
-            <a href="#" onClick={ this._onExpandAll }><span className={ 'glyphicon ' + glyphiconDirection }></span></a>
-          </div>
-          <div className={ columnSizeCssMap.name }><a href="#" onClick={this._sortReport}>Location</a></div>
-          <div className={ columnSizeCssMap.duration }></div>
-          <div className={ columnSizeCssMap.amount }><a href="#" onClick={this._sortReport}>Amount</a></div>
-          <div className={ columnSizeCssMap.date }>Updated</div>
-        </div>
-      </div>
+      <ColumnHeader
+        onSortClick={ this._sortReport }
+        onExpandAllToggle={ this._onExpandAll }
+        isExpandAll={ this.props.expandAll }
+      />
     );
-  },
+  }
 
-  _getLocations: function() {
-    return _.reduce(this.state.groupedLocations, (result, groupedLocation) => {
-      var groupRowData = groupedLocation.reports[0];
-      var detailRows = this._getDetailRows(groupedLocation.reports);
-      var formattedDate = DateFormatter.formatTodayDate(groupRowData.source_date);
+  _getLocations() {
+    return _.reduce(this.props.locations, (result, groupedLocation) => {
+      const groupRowData = groupedLocation.reports[0];
+      const detailRows = this._getDetailRows(groupedLocation.reports);
+      const formattedDate = DateFormatter.formatTodayDate(groupRowData.source_date);
       result.push(
         <GroupRow
           key={ groupRowData.ROW_NUM }
@@ -114,24 +87,25 @@ module.exports = React.createClass({
           amount={ groupRowData.amount }
           source={ groupRowData.source_name }
           sourceUrl={ groupRowData.url }
-          initExpanded={ this.state.expandAll }
+          expanded={ this._isRowExpanded(groupRowData.ROW_NUM) }
+          onExpandToggle={ this._onExpandRowToggle.bind(this, groupRowData.ROW_NUM) }
         >
           { detailRows }
         </GroupRow>
       );
       return result;
     }, []);
-  },
+  }
 
-  _getDetailRows: function(detailRowDataArray) {
-    var duration;
-    var prevDuration = 0;
-    var formattedDate;
+  _getDetailRows(detailRowDataArray) {
+    let duration;
+    let prevDuration = 0;
+    let formattedDate;
+
     return _.reduce(detailRowDataArray, (result, detailRowData) => {
       duration = detailRowData.duration !== prevDuration ? detailRowData.duration : 0;
       prevDuration = detailRowData.duration;
       formattedDate = DateFormatter.formatTodayDate(detailRowData.source_date);
-
 
       result.push(
         <DetailRow
@@ -145,39 +119,52 @@ module.exports = React.createClass({
       );
       return result;
     }, []);
-  },
-
-  _onLocationsLoaded: function(locations) {
-    var groupedLocations = LocationHelper.map(locations);
-    this.setState({
-      groupedLocations: groupedLocations,
-      loading: false
-    });
-  },
-
-  _sortReport: function(event) {
-    var direction, dataIndex;
-    if (event.target.textContent === 'Amount') {
-      dataIndex = 'amount';
-      direction = 'descending';
-    } else if (event.target.textContent === 'Location') {
-      dataIndex = 'location';
-      direction = 'ascending';
-    }
-    var groupedLocations = LocationHelper.orderBy(dataIndex, this.state.groupedLocations, direction);
-
-    this.setState({
-      groupedLocations: groupedLocations,
-      order: {
-        dataIndex: dataIndex,
-        direction: direction
-      }
-    });
-  },
-
-  _onExpandAll: function() {
-      this.setState({
-        expandAll: !this.state.expandAll
-      });
   }
-});
+
+  _sortReport(event) {
+
+    const dataIndex = event.target.textContent.toLowerCase();
+    const previousOrder = this.props.order;
+    let direction = 'ascending';
+
+    if (dataIndex === previousOrder.dataIndex) {
+      direction = previousOrder.direction === 'descending' ? 'ascending' : 'descending';
+    }
+
+    this.props.dispatch(sort({dataIndex, direction}));
+  }
+
+  _onExpandAll() {
+    this.props.dispatch(expandAll(!this.props.expandAll));
+  }
+
+  _onExpandRowToggle(rowNumber) {
+    this.props.dispatch(expandRowToggle(rowNumber));
+  }
+
+  _isRowExpanded(rowNumber) {
+    return this.props.expandAll || this.props.expandedRows.indexOf(rowNumber) > -1;
+  }
+}
+
+TodayReport.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  locations: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  order: PropTypes.object.isRequired,
+  expandAll: PropTypes.bool.isRequired,
+  expandedRows: PropTypes.array.isRequired
+};
+
+function mapStateToProps(state) {
+  const pageState = state.TodayReport;
+  return {
+    locations: pageState.locations,
+    loading: pageState.loading,
+    order: pageState.order,
+    expandAll: pageState.expandAll,
+    expandedRows: pageState.expandedRows
+  };
+}
+
+export default connect(mapStateToProps)(TodayReport);

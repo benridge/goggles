@@ -1,17 +1,9 @@
-var React = require('react');
+import React, { Component, PropTypes }  from 'react';
 
-module.exports = React.createClass({
+class DetailRow extends Component {
 
-  propTypes: {
-    date: React.PropTypes.string,
-    duration: React.PropTypes.number,
-    amount: React.PropTypes.number,
-    source: React.PropTypes.string,
-    sourceUrl: React.PropTypes.string
-  },
-
-  render: function() {
-    var duration = this._formatDuration();
+  render() {
+    const duration = this._formatDuration();
     return (
       <div className="row">
         <div className="col-xs-1 expander-cell"></div>
@@ -25,9 +17,9 @@ module.exports = React.createClass({
         <div className="col-xs-2">{ this.props.date }</div>
       </div>
     );
-  },
+  }
 
-  _formatDuration: function() {
+  _formatDuration() {
     switch (this.props.duration) {
       case (0):
         return '';
@@ -39,4 +31,14 @@ module.exports = React.createClass({
         return (this.props.duration / 24) + ' days';
     }
   }
-});
+}
+
+DetailRow.propTypes = {
+  date: PropTypes.string,
+  duration: PropTypes.number,
+  amount: PropTypes.number,
+  source: PropTypes.string,
+  sourceUrl: PropTypes.string
+};
+
+export default DetailRow;

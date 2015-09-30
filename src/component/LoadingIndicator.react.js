@@ -1,16 +1,8 @@
-/**
- * @jsx React.DOM
- */
+import React, { Component, PropTypes } from 'react';
 
-var React = require('react');
-
-module.exports = React.createClass({
-  displayName: 'LoadingIndicator',
-  propTypes: {
-    loading: React.PropTypes.bool
-  },
-  render: function() {
-    var className = "alert alert-info";
+class LoadingIndicator extends Component {
+  render() {
+    let className = "alert alert-info";
     if (this.props.loading !== true) {
       className += " hidden";
     }
@@ -18,5 +10,10 @@ module.exports = React.createClass({
       <div id="loadingIndicator" className={ className } role="alert">Loading...</div>
     );
   }
-});
-//class="alert alert-info" role="alert"
+}
+
+LoadingIndicator.propTypes = {
+    loading: PropTypes.bool
+};
+
+export default LoadingIndicator;
