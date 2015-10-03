@@ -1,6 +1,8 @@
 # goggles
 React frontend for the Colorado snow report website waapow.com.
 
+![alt text](screenshot.png "screenshot")
+
 ## build
 ```npm install && grunt build```
 
@@ -12,6 +14,10 @@ requires local Tomcat running waapow WAR
 
 ```npm start```
 
+## License
+Unlicensed. Prohibited to use, copy, redistribute.
+Contact the author if you are interested in doing something with the code.
+
 ## Revision History
 
 ### version 2
@@ -22,6 +28,7 @@ requires local Tomcat running waapow WAR
 ### version 1
 - React version. Previous (non-public) frontend was written in ExtJS.
 - Removed unnecessary functionality, focusing on a fast, simple interface.
+- Responsive design (with help from bootstrap).
 
 
 
