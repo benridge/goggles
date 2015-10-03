@@ -1,20 +1,26 @@
 import fetch from 'isomorphic-fetch';
-import Environment from '../env/Environment';
+import Environment from 'env/Environment';
+import { TODAY_URL } from 'constants/ApiUrls';
 
 export function loadToday() {
-  const url = '/FindpowReport/index.json?snowReportType=today';
-
-  return Environment.getServerConfig().then((ServerConfig)=> {
-    const serverRoot = ServerConfig.TOMCAT_URL;
-    return new Promise((resolve, reject) => {
-      fetch(serverRoot + url)
-        .then(response => response.json())
-        .then(json => resolve(json.report.locations));
-    });
+  return Environment.getServerConfig().then((serverConfig)=> {
+    //there's probably a better way to run against mock data
+    //instead of having this (prod) code checking a config setting
+    const useMockData = serverConfig.UseMockData;
+    if (useMockData) {
+      return mockData();
+    } else {
+      const serverRoot = serverConfig.TOMCAT_URL;
+      return new Promise((resolve) => {
+        fetch(serverRoot + TODAY_URL)
+          .then(response => response.json())
+          .then(json => resolve(json.report.locations));
+      });
+    }
   });
 }
 
-export function testToday() {
+function mockData() {
   return new Promise((resolve, reject) => {
     resolve([
       {

@@ -2,13 +2,14 @@
 //https://www.codementor.io/reactjs/tutorial/test-reactjs-components-karma-webpack
 
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = function(config) {
   config.set({
-    browsers: [ 'Chrome' ], //run in Chrome
+    browsers: [ 'PhantomJS' ],
     singleRun: false, //just run once by default
     autoWatch: true,
-    frameworks: [ 'mocha' ], //use the mocha test framework
+    frameworks: [ 'mocha', 'es6-shim' ],
     files: [
       'tests.webpack.js' //just load this file
     ],
@@ -20,10 +21,11 @@ module.exports = function(config) {
       devtool: 'inline-source-map', //just do inline source maps instead of the default
       module: {
         loaders: [
-          { test: /\.js$/, loader: 'babel-loader' },
-          {
-            test: /\.css$/,
-            loader: "style!css"
+          { test: /\.js$/,
+            include: [
+              path.resolve(__dirname, "src")
+            ],
+            loader: 'babel-loader'
           }
         ]
       },

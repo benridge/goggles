@@ -1,0 +1,1 @@
+export const TODAY_URL = '/FindpowReport/index.json?snowReportType=today';

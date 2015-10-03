@@ -1,4 +1,4 @@
-import request from 'superagent';
+import fetch from 'isomorphic-fetch';
 
 let serverConfig;
 
@@ -10,13 +10,11 @@ const Environment = {
       if (serverConfig) {
         resolve(serverConfig);
       } else {
-        request
-          .get('/environment.js')
-          .end((res) => {
-            const env = res.body;
-            serverConfig = env;
-
-            resolve(env);
+        fetch('/environment.js')
+          .then(response => response.json())
+          .then(json => {
+            serverConfig = json;
+            resolve(serverConfig);
           });
       }
       });

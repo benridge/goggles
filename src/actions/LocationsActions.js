@@ -1,6 +1,7 @@
 import * as types from 'constants/ActionTypes';
 import { loadToday, testToday } from 'api/LocationsApi';
 import * as LocationHelper from 'utils/LocationHelper';
+import Environment from 'env/Environment';
 
 function locationsLoaded(locations) {
   return { type: types.LOCATIONS_LOADED, locations };
@@ -8,7 +9,7 @@ function locationsLoaded(locations) {
 
 export function loadLocations() {
   return (dispatch) => {
-    return testToday()
+    return loadToday()
       .then((locations) => {
         const groupedLocations = LocationHelper.map(locations);
         return dispatch(locationsLoaded(groupedLocations));
