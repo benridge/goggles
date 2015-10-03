@@ -5,7 +5,7 @@ module.exports = function(){
       entry: "./src/App.js",
       output: {
         path: './public/dist',
-        filename: 'webpack_bundle.js'
+        filename: 'goggles.js'
       },
       externals: {
         jquery: true,
