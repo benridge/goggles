@@ -1,47 +1,20 @@
-/**
- * @jsx React.DOM
- */
+import React, { Component, PropTypes } from 'react';
+import * as AmountFormatter from '../utils/AmountFormatter';
 
-var React = require('react');
-var AmountFormatter = require('../util/AmountFormatter');
-
-module.exports = React.createClass({
-
-  getInitialState: function() {
-    return {
-      expanded: this.props.initExpanded
-    };
-  },
-
-  componentWillReceiveProps: function(newProps) {
-    this.setState({
-      expanded: newProps.initExpanded
-    });
-  },
-
-  propTypes: {
-    idx: React.PropTypes.number,
-    name: React.PropTypes.string,
-    date: React.PropTypes.string,
-    amount: React.PropTypes.number,
-    source: React.PropTypes.string,
-    sourceUrl: React.PropTypes.string,
-    initExpanded: React.PropTypes.bool
-  },
-
-  render: function() {
-    var collapseId = this.props.idx + "Collapse";
-    var href = "#" + collapseId;
-    var altText = this.props.name + " report details";
-    var amountCategory = AmountFormatter.getAmountCategory(this.props.amount, 24);
-    var amountClasses = "col-xs-2 amount-" + amountCategory;
-    var linkCollapseCls = this.state.expanded ? '' : 'collapsed';
-    var collapsedContentCls = this.state.expanded ? 'collapse in' : 'collapse';
-    var glyphicon = this.state.expanded ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right';
-    var ariaExpanded = this.state.expanded.toString();
+class GroupRow extends Component {
+  render() {
+    const collapseId = this.props.idx + "Collapse";
+    const href = "#" + collapseId;
+    const altText = this.props.name + " report details";
+    const amountCategory = AmountFormatter.getAmountCategory(this.props.amount, 24);
+    const amountClasses = "col-xs-2 amount-" + amountCategory;
+    const linkCollapseCls = this.props.expanded ? '' : 'collapsed';
+    const collapsedContentCls = this.props.expanded ? 'collapse in' : 'collapse';
+    const glyphicon = this.props.expanded ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right';
+    const ariaExpanded = this.props.expanded.toString();
     //fixes an apparent bug in bootstrap collapse that doesn't remove height of 0 if collapsed manually and then dom is updated
-    var collapsedStyle = {
-      height: this.state.expanded ? 'inherit' : '0'
+    const collapsedStyle = {
+      height: this.props.expanded ? 'inherit' : '0'
     };
 
     return (
@@ -54,7 +27,7 @@ module.exports = React.createClass({
               title={ altText }
               aria-expanded={ ariaExpanded }
               aria-controls={ collapseId }
-              onClick={ this._onExpand }
+              onClick={ this.props.onExpandToggle }
             >
               <div className="row">
                 <div className="col-xs-1 expander-cell">
@@ -75,12 +48,18 @@ module.exports = React.createClass({
         </div>
       </div>
     );
-  },
-
-  _onExpand: function() {
-    this.setState({
-      expanded: !this.state.expanded
-    });
   }
-});
+}
 
+GroupRow.propTypes = {
+    idx: PropTypes.number,
+    name: PropTypes.string,
+    date: PropTypes.string,
+    amount: PropTypes.number,
+    source: PropTypes.string,
+    sourceUrl: PropTypes.string,
+    expanded: PropTypes.bool,
+    onExpandToggle: PropTypes.func
+};
+
+export default GroupRow;

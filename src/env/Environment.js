@@ -1,9 +1,10 @@
-var request = require('superagent');
+import request from 'superagent';
 
-var serverConfig;
+let serverConfig;
 
-var Environment = {
-  getServerConfig: function() {
+const Environment = {
+
+  getServerConfig() {
 
     return new Promise((resolve, reject) => {
       if (serverConfig) {
@@ -12,7 +13,7 @@ var Environment = {
         request
           .get('/environment.js')
           .end((res) => {
-            var env = res.body;
+            const env = res.body;
             serverConfig = env;
 
             resolve(env);
@@ -22,4 +23,4 @@ var Environment = {
   }
 };
 
-module.exports = Environment;
+export default Environment;
