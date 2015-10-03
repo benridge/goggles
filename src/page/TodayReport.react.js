@@ -35,7 +35,7 @@ class TodayReport extends Component {
         <LoadingIndicator loading={ this.props.loading} />
 
         <div className="list-group">
-          <div id="report-title" className="list-group-item active">Today's Reports</div>
+          <div id="report-title" className="list-group-item active">Today's Colorado Snow Reports</div>
           { blankSlate }
           { header }
           { table }
