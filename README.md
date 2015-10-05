@@ -1,5 +1,5 @@
 
-# goggles [![Build Status](https://travis-ci.org/benridge/goggles.svg)](https://travis-ci.org/benridge/goggles)
+# goggles [![Build Status](https://travis-ci.org/benridge/goggles.svg?branch=master)](https://travis-ci.org/benridge/goggles)
 React frontend for the Colorado snow report website waapow.com.
 
 ![alt text](screenshot.png "screenshot")
