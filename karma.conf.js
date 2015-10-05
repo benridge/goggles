@@ -1,6 +1,3 @@
-//based off of
-//https://www.codementor.io/reactjs/tutorial/test-reactjs-components-karma-webpack
-
 var webpack = require('webpack');
 var path = require('path');
 
@@ -10,13 +7,27 @@ module.exports = function(config) {
     singleRun: false, //just run once by default
     autoWatch: true,
     frameworks: [ 'mocha', 'es6-shim' ],
+    //files: [
+    //  'src/**/*.spec.js'
+    //],
     files: [
       'tests.webpack.js' //just load this file
     ],
-    preprocessors: {
-      'tests.webpack.js': [ 'webpack', 'sourcemap' ] //preprocess with webpack and our sourcemap loader
-    },
     reporters: [ 'dots' ], //report results in this format
+    // optionally, configure the reporter
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
+    plugins: [
+      require('webpack'),
+      require('karma-coverage')
+    ],
+    preprocessors: {
+      'tests.webpack.js': [ 'webpack', 'sourcemap', 'coverage' ] //preprocess with webpack and our sourcemap loader
+      //,'src/.(?!(spec.js)$)([^.]+$)': ['coverage']
+      //,'src/**/*.js': ['coverage']
+    },
     webpack: { //kind of a copy of your webpack config
       devtool: 'inline-source-map', //just do inline source maps instead of the default
       module: {
