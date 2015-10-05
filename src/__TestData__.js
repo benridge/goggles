@@ -1,4 +1,4 @@
-export function state(){
+export function groupedData(){
   return [
     {
       "location": "Arapahoe Basin",
@@ -33,7 +33,7 @@ export function state(){
   ];
 }
 
-export function raw(){
+export function rawData(){
   return [
     {
       "ROW_NUM": 1,

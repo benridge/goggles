@@ -3,9 +3,9 @@ import _ from 'lodash';
 import expect from 'expect';
 import reducer from '../TodayReportReducer';
 import * as types from 'constants/ActionTypes';
-import { state } from './LocationData.js';
+import { groupedData } from '__TestData__';
 
-const locationsState = state();
+const locationsState = groupedData();
 
 describe('reducers/locations', () => {
 

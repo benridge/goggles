@@ -5,8 +5,10 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = function(config) {
+  var browsers = process.env.TEST_DEBUG ? ['Chrome'] : ['PhantomJS'];
+
   config.set({
-    browsers: [ 'PhantomJS' ],
+    browsers: browsers,
     singleRun: false, //just run once by default
     autoWatch: true,
     frameworks: [ 'mocha', 'es6-shim' ],
