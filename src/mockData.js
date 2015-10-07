@@ -1,21 +1,8 @@
-import fetch from 'isomorphic-fetch';
-import Environment from 'env/Environment';
-import { TODAY_URL } from 'constants/ApiUrls';
-
-export function loadToday() {
-  return Environment.getServerConfig().then((serverConfig)=> {
-    const serverRoot = serverConfig.TOMCAT_URL;
-    return new Promise((resolve) => {
-      fetch(serverRoot + TODAY_URL)
-        .then(response => response.json())
-        .then(json => resolve(json.report.locations));
-    });
-  });
-}
-
-function mockData() {
-  return new Promise((resolve, reject) => {
-    resolve([
+export const mockLocations = [
+  {
+    "location": "Arapahoe Basin",
+    "amount": 3,
+    "reports": [
       {
         "ROW_NUM": 1,
         "location": "Arapahoe Basin",
@@ -61,8 +48,13 @@ function mockData() {
         "url": "http://www.arapahoebasin.com/ABasin/snow-conditions/default.aspx",
         "amount": 7,
         "source_date": "03/23/2015 05:36 AM MDT"
-      },
-
+      }
+    ]
+  },
+  {
+    "location": "Beaver Creek",
+    "amount": 1,
+    "reports": [
       {
         "ROW_NUM": 7,
         "location": "Beaver Creek",
@@ -96,8 +88,13 @@ function mockData() {
         "url": "http://www.snow.com/mountainconditions/snowandweatherreports.aspx",
         "amount": 3,
         "source_date": "03/23/2015 04:06 PM MDT"
-      },
-
+      }
+    ]
+  },
+  {
+    "location": "Winter Park",
+    "amount": 10,
+    "reports": [
       {
         "ROW_NUM": 43,
         "location": "Winter Park",
@@ -120,7 +117,13 @@ function mockData() {
         "url": "http://www.coloradoski.com/SnowReport/",
         "amount": 24,
         "source_date": "03/23/2015 01:16 PM MDT"
-      },
+      }
+    ]
+  },
+  {
+    "location": "Wolf Creek",
+    "amount": 8,
+    "reports": [
       {
         "ROW_NUM": 45,
         "location": "Wolf Creek",
@@ -167,6 +170,6 @@ function mockData() {
         "amount": 24,
         "source_date": "03/23/2015 09:53 AM MDT"
       }
-    ]);
-  });
-}
+    ]
+  }
+];
