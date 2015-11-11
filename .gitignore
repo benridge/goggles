@@ -3,5 +3,4 @@
 node_modules
 *.iml
 npm-debug.log
-public/dist
 public/lib
