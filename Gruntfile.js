@@ -21,7 +21,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['Gruntfile.js', 'webpack.config.js', 'src/**/*.js', 'test/**/*.js'],
+      files: ['Gruntfile.js', 'webpack.config.js', 'src/**/*.js', 'test/**/*.js', 'public/css/*.css'],
       tasks: ['webpack']
     },
     webpack: webpackConfig(),

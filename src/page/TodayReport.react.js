@@ -6,6 +6,7 @@ import ColumnHeader from './../component/ColumnHeader.react';
 import GroupRow from './../component/GroupRow.react';
 import DetailRow from './../component/DetailRow.react';
 import LoadingIndicator from './../component/LoadingIndicator.react';
+import ReportDateRow from 'component/ReportDateRow';
 import * as DateFormatter from '../utils/DateFormatter';
 import { loadLocations, expandAll, expandRowToggle, sort } from '../actions/LocationsActions';
 
@@ -74,7 +75,7 @@ class TodayReport extends Component {
   }
 
   _getLocations() {
-    return _.reduce(this.props.locations, (result, groupedLocation) => {
+    const dataRows = _.reduce(this.props.locations, (result, groupedLocation) => {
       const groupRowData = groupedLocation.reports[0];
       const detailRows = this._getDetailRows(groupedLocation.reports);
       const formattedDate = DateFormatter.formatTodayDate(groupRowData.source_date);
@@ -93,8 +94,12 @@ class TodayReport extends Component {
           { detailRows }
         </GroupRow>
       );
+
       return result;
     }, []);
+
+    dataRows.push(<ReportDateRow loading={ this.props.loading } key= { dataRows.length + 2 } />);
+    return dataRows;
   }
 
   _getDetailRows(detailRowDataArray) {
