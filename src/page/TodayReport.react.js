@@ -98,9 +98,10 @@ class TodayReport extends Component {
       return result;
     }, []);
 
-    dataRows.push(<ReportDateRow loading={ this.props.loading } key= { dataRows.length + 2 } />);
+    dataRows.push(<ReportDateRow loading={ this.props.loading } key="reportDateRow" />);
     return dataRows;
   }
+
 
   _getDetailRows(detailRowDataArray) {
     let duration;
