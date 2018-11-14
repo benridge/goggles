@@ -4,3 +4,8 @@ node_modules
 *.iml
 npm-debug.log
 public/lib
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

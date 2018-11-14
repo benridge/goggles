@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import Environment from 'env/Environment';
-import { TODAY_URL } from 'constants/ApiUrls';
+import Environment from '../env/Environment';
+import { TODAY_URL } from '../constants/ApiUrls';
 
 export function loadToday() {
   return Environment.getServerConfig().then((serverConfig)=> {
